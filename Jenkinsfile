@@ -1,13 +1,19 @@
+/*
+Tóm tắt: pipeline build Docker image cho Dash app, push lên Docker Hub,
+dọn container cũ và chạy lại container portugal-hotel-booking trên network yan.
+*/
 pipeline {
     agent any
     
     stages {
+        // Build image mới từ Dockerfile trong repo.
         stage('Build') {
             steps {
                 sh 'docker build -t yamiannephilim/dash:latest .'
             }
         }
 
+        // Push image lên Docker Hub bằng credential Jenkins đã cấu hình.
         stage('Push') {
             steps {
                 withDockerRegistry(credentialsId: 'docker_hub', url: 'https://index.docker.io/v1/') {
@@ -16,6 +22,7 @@ pipeline {
             }
         }
 
+        // Dọn container cũ nếu còn tồn tại trước khi deploy bản mới.
         stage('Clean') {
             steps {
                 script {
@@ -28,6 +35,7 @@ pipeline {
             }
         }
 
+        // Chạy container mới với restart policy để app tự khởi động lại khi lỗi hoặc reboot.
         stage('Run') {
             steps {
                 sh 'docker container stop portugal-hotel-booking || echo "this container does not exist"'
@@ -39,6 +47,7 @@ pipeline {
     }
 
     post {
+        // Xóa workspace sau pipeline để tránh reuse artifact cũ.
         always {
             cleanWs()
         }
