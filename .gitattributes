@@ -1,6 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 *.ipynb text eol=lf
+*.md text eol=lf
 *.py text eol=lf
 Dockerfile text eol=lf
 Jenkinsfile text eol=lf

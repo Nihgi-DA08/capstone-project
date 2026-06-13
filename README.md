@@ -1,12 +1,5 @@
 # CAPSTONE PROJECT
-Phân tích về lượng booking khách sạn của Bồ Đào Nha. Demo
-
-## LINK DEMO
-<div align='center'>
-
-[Click vào đây để xem chi tiết](https://portugal-hotel-booking.yamiannephilim.com)
-
-</div>
+Dựa trên dữ liệu booking khách sạn tại Bồ Đào Nha, phân tích xu hướng đặt phòng và trực quan hóa các yếu tố ảnh hưởng đến lượng booking, khách hàng, quốc gia, kênh bán và Average Daily Rate.
 
 ## HÌNH ẢNH DEMO
 <p align="center">
@@ -15,17 +8,21 @@ Phân tích về lượng booking khách sạn của Bồ Đào Nha. Demo
 
 ## CODE DEMO
 ```python
-# Create dropdown list
-def crt_ddl(col_name, desc, percent='15%', default='All'):
-    list = df[col_name].unique().tolist()
-    list.append('All')
-    return Dropdown(
-        options=list,
-        value=default,
-        description=f'{desc}: ',
-        style={'description_width': 'initial'},
-        layout={'width': percent, 'margin': '0 auto'})
+from pathlib import Path
+
+DATA_PATH = Path("data/data_valid.csv")
+COUNTRY_CODES_PATH = Path("data/country_codes_list.csv")
+EXCEL_PATH = Path("excel/portugal_hotel_booking.xlsx")
 ```
+
+## CẤU TRÚC DỮ LIỆU
+- `data/`: dữ liệu CSV sau khi làm sạch, các dòng không hợp lệ và bảng mã quốc gia.
+- `excel/`: file Excel nguồn.
+- `powerpoint/`: file thuyết trình dự án.
+- `pic/`: hình ảnh dùng trong README và mô tả công nghệ.
+- `data_cleaning.ipynb`: notebook làm sạch dữ liệu và sinh `data/data_valid.csv`, `data/data_invalid.csv`.
+- `analyse_portugal_hotel_booking.ipynb`: notebook phân tích EDA, trực quan hóa và mô hình Linear Regression minh họa.
+- `app.py`: Dash app dùng dữ liệu sạch để hiển thị dashboard.
 
 ### THÀNH VIÊN
 Nhóm NIHGI gồm các thành viên:
@@ -45,36 +42,44 @@ Nhóm NIHGI gồm các thành viên:
 <img src='pic/2.png' align='left' width='3%' height='3%'></img>
 <div style='display:flex;'>
 
-- Matplotlib » 3.5.2
+- Matplotlib » 3.8+
 
 </div>
 <img src='pic/3.png' align='left' width='3%' height='3%'></img>
 <div style='display:flex;'>
 
-- NumPy » 1.21.5
+- NumPy » 1.26+
 
 </div>
 <img src='pic/4.png' align='left' width='3%' height='3%'></img>
 <div style='display:flex;'>
 
-- Pandas » 1.4.4
+- Pandas » 2.2+
 
 </div>
 <img src='pic/5.png' align='left' width='3%' height='3%'></img>
 <div style='display:flex;'>
 
-- seaborn » 0.11.2
+- seaborn » 0.13+
 
 </div>
 <img src='pic/6.png' align='left' width='3%' height='3%'></img>
 <div style='display:flex;'>
 
-- Plotly » 2.9.3
+- Plotly » 5.22+
 
 </div>
 <img src='pic/7.png' align='left' width='3%' height='3%'></img>
 <div style='display:flex;'>
 
-- scikit-learn » 1.0.2
+- scikit-learn » 1.5+
 
 </div>
+
+### CHẠY DỰ ÁN
+```powershell
+py -m pip install -r requirements.txt
+py -m jupyter nbconvert --to notebook --execute --inplace data_cleaning.ipynb --ExecutePreprocessor.timeout=900
+py -m jupyter nbconvert --to notebook --execute --inplace analyse_portugal_hotel_booking.ipynb --ExecutePreprocessor.timeout=900
+py app.py
+```
